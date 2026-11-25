@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Project Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Project Directories
+        run: |
+          test -d .github/workflows
+          test -d container
+          test -d k8s
+          test -d monitoring
+          test -d docs/captures
+
+      - name: Success Message
+        run: echo "Project structure validation passed!"
